@@ -2,6 +2,8 @@
 
 A deliberately small React + TypeScript + Vite starter for turning an audience idea into a working app during a live presentation. One component, one stylesheet, no accounts, database, or external data required.
 
+**Live demo:** [live-vibe-code-demo.pages.dev](https://live-vibe-code-demo.pages.dev/). Use this permanent production URL for the audience QR code.
+
 ## Local development
 
 Use Node.js 24.14.0 (pinned in `.node-version`) and npm.
@@ -66,6 +68,7 @@ Cloudflare Pages' GitHub integration deploys pushes to `main`. The coding agent 
 | Setting | Value |
 | --- | --- |
 | Repository | [webrlabs/live-vibe-code-demo](https://github.com/webrlabs/live-vibe-code-demo) |
+| Production URL | [live-vibe-code-demo.pages.dev](https://live-vibe-code-demo.pages.dev/) |
 | Production branch | `main` |
 | Pristine baseline branch | `template` |
 | Baseline tag | `demo-template-v1` |
@@ -100,7 +103,7 @@ If `origin/template` is missing after a fetch, stop before resetting. In the ori
 7. Use that URL (or a custom domain connected to it) for the permanent QR code. Keep the same Pages project across demonstrations. Do not use a deployment-specific preview URL.
 8. Optionally disable preview branch deployments; `template` must never be the production branch.
 
-No production URL or automatic deployment has been verified yet. Update this README with the actual production URL after connecting it.
+The project is deployed at [live-vibe-code-demo.pages.dev](https://live-vibe-code-demo.pages.dev/). On September 15, 2026, the production HTML, JavaScript, stylesheet, and favicon returned HTTP 200; the HTML references the same asset filenames as the validated local build. To verify each subsequent automatic deployment, check the matching commit in Cloudflare as described below.
 
 References: [Pages Git integration](https://developers.cloudflare.com/pages/get-started/git-integration/), [React/Vite build settings](https://developers.cloudflare.com/pages/configuration/build-configuration/), [build runtime configuration](https://developers.cloudflare.com/pages/configuration/build-image/).
 
