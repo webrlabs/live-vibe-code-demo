@@ -73,7 +73,7 @@ Cloudflare Pages' GitHub integration deploys pushes to `main`. The coding agent 
 | Production URL | [live-vibe-code-demo.pages.dev](https://live-vibe-code-demo.pages.dev/) |
 | Production branch | `main` |
 | Pristine baseline branch | `template` |
-| Baseline tag | `demo-template-v2` |
+| Baseline tag | `demo-template-v3` |
 | Framework preset | React (Vite) |
 | Build command | `npm run build` |
 | Build output directory | `dist` |
@@ -82,7 +82,7 @@ Cloudflare Pages' GitHub integration deploys pushes to `main`. The coding agent 
 
 ### GitHub setup
 
-The connected repository is [webrlabs/live-vibe-code-demo](https://github.com/webrlabs/live-vibe-code-demo). The production branch `main`, pristine `template` branch, and `demo-template-v2` tag have been pushed. Keep this remote for the current demo.
+The connected repository is [webrlabs/live-vibe-code-demo](https://github.com/webrlabs/live-vibe-code-demo). The production branch `main`, pristine `template` branch, and `demo-template-v3` tag have been pushed. Keep this remote for the current demo.
 
 When cloning onto a different development computer:
 
@@ -92,7 +92,7 @@ cd live-vibe-code-demo
 npm ci
 ```
 
-If `origin/template` is missing after a fetch, stop before resetting. In the original checkout, verify the local `template` branch and `demo-template-v2` tag, then publish them with `git push origin template demo-template-v2` and run `git fetch origin`. A fetch only downloads branches that exist on the remote.
+If `origin/template` is missing after a fetch, stop before resetting. In the original checkout, verify the local `template` branch and `demo-template-v3` tag, then publish them with `git push origin template demo-template-v3` and run `git fetch origin`. A fetch only downloads branches that exist on the remote.
 
 ### Connect Cloudflare Pages once
 
@@ -115,8 +115,8 @@ References: [Pages Git integration](https://developers.cloudflare.com/pages/get-
 2. Test the permanent URL on your phone, ideally on mobile data. Display its QR code to the audience.
 3. Open this repository in the remote coding agent on your home development computer.
 4. Paste `LIVE_DEMO_PROMPT.md`, replacing the idea placeholder with the audience's suggestion.
-5. The agent follows `AGENTS.md`: implement, check, build, review, commit, and push to `main`.
-6. Watch the Cloudflare deployment. Once it succeeds, ask the audience to refresh the same URL. The placeholder does not automatically refresh.
+5. The agent follows `AGENTS.md` with a **40-minute deadline**: ship a small working version first, then check, build, review, commit, and push usable milestones to `main` roughly every 3–5 minutes. Reserve the final 5 minutes for fixes and final verification.
+6. Watch each Cloudflare deployment. After each success, ask the audience to refresh the same URL to see progress throughout the session. The placeholder does not automatically refresh.
 
 Keep the idea achievable and prefer local/demo data. The placeholder's waiting indicator is decorative, not a live deployment status feed.
 
@@ -130,7 +130,7 @@ Keep the idea achievable and prefer local/demo data. The placeholder's waiting i
 
 ## Reset before another presentation
 
-The `template` branch and `demo-template-v2` tag preserve the placeholder with its QR code. Leave both untouched during live challenges. The original `demo-template-v1` tag remains available as the historical baseline without a QR code.
+The `template` branch and `demo-template-v3` tag preserve the placeholder with its QR code and 40-minute live-demo instructions. Leave both untouched during live challenges. Earlier tags remain unchanged: `demo-template-v1` is the original placeholder and `demo-template-v2` adds the QR code.
 
 **This intentionally discards tracked local edits and replaces production branch history.** Save any demo you want to keep on a separate branch and commit or stash local edits first. Run from this repository and check that `origin` is the intended demo repository.
 
@@ -174,7 +174,7 @@ Untracked files are not removed by reset. Review and remove demo-only leftovers 
 ```sh
 git checkout main
 git pull --ff-only origin main
-git restore --source=demo-template-v2 --staged --worktree -- .
+git restore --source=demo-template-v3 --staged --worktree -- .
 git commit --allow-empty -m "Restore live demo placeholder"
 git push origin main
 npm ci
