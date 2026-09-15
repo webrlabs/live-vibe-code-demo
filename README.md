@@ -35,6 +35,8 @@ $env:npm_config_cache = "$env:TEMP\live-ai-app-npm-cache"
 
 These are session-only workarounds; they do not change global settings.
 
+If `npm ci` reports `EPERM` while deleting `rolldown-binding.win32-x64-msvc.node`, stop this project's running `npm run dev` and `npm run preview` processes with Ctrl+C in their terminals, then retry `npm ci`. Windows cannot replace a native module while a process has it loaded. Do not stop unrelated Node applications. If no project process is running, retry once before investigating file permissions or antivirus locks.
+
 ## Deployment architecture
 
 ```text
@@ -63,7 +65,7 @@ Cloudflare Pages' GitHub integration deploys pushes to `main`. The coding agent 
 
 | Setting | Value |
 | --- | --- |
-| Repository name | `live-ai-app-challenge` |
+| Repository | [webrlabs/live-vibe-code-demo](https://github.com/webrlabs/live-vibe-code-demo) |
 | Production branch | `main` |
 | Pristine baseline branch | `template` |
 | Baseline tag | `demo-template-v1` |
@@ -73,36 +75,32 @@ Cloudflare Pages' GitHub integration deploys pushes to `main`. The coding agent 
 | Root directory | Repository root (leave blank) |
 | Node version | `24.14.0` |
 
-### Finish GitHub setup
+### GitHub setup
 
-Setup status: the local template is prepared, but GitHub creation/push and Cloudflare configuration require completion. GitHub CLI was unavailable; the browser requires sign-in. The saved Git account is `onlyjus`, but the requested remote could not be found. No remote was configured and no repository was overwritten.
+The connected repository is [webrlabs/live-vibe-code-demo](https://github.com/webrlabs/live-vibe-code-demo). The production branch `main`, pristine `template` branch, and `demo-template-v1` tag have been pushed. Keep this remote for the current demo.
 
-1. Sign in to [GitHub](https://github.com/login).
-2. Open [New repository](https://github.com/new). Choose the intended owner, name it `live-ai-app-challenge`, and create it **without** a README, .gitignore, or license (these local files already exist). A private repository works with Pages; the deployed website will be public.
-3. If that name already exists, inspect it first. Connect it only if it belongs to this demo; do not overwrite an unrelated repository.
-4. Copy its HTTPS URL, then run the following, replacing `YOUR-OWNER`:
+When cloning onto a different development computer:
 
 ```sh
-git remote add origin https://github.com/YOUR-OWNER/live-ai-app-challenge.git
-git push -u origin main
-git push origin template
-git push origin demo-template-v1
+git clone https://github.com/webrlabs/live-vibe-code-demo.git
+cd live-vibe-code-demo
+npm ci
 ```
 
-If GitHub CLI is installed and authenticated later, you can create the repository instead with `gh repo create live-ai-app-challenge --private --source=. --remote=origin --push`, then push the baseline branch and tag above. Do not run creation commands against an existing remote.
+If `origin/template` is missing after a fetch, stop before resetting. In the original checkout, verify the local `template` branch and `demo-template-v1` tag, then publish them with `git push origin template demo-template-v1` and run `git fetch origin`. A fetch only downloads branches that exist on the remote.
 
 ### Connect Cloudflare Pages once
 
 1. Sign in to the [Cloudflare dashboard](https://dash.cloudflare.com/).
 2. Open **Workers & Pages → Create application → Pages → Connect to Git**.
 3. Choose GitHub. If asked, authorize **Cloudflare Workers and Pages**, selecting only this demo repository.
-4. Choose `live-ai-app-challenge` and **Begin setup**.
+4. Choose `webrlabs/live-vibe-code-demo` and **Begin setup**.
 5. Apply the settings in the table above; keep automatic production deployments enabled. The committed `.node-version` pins the build runtime; if required, also set `NODE_VERSION=24.14.0` in build settings.
 6. Select **Save and Deploy**, wait for success, and copy the **production** URL from the project dashboard.
 7. Use that URL (or a custom domain connected to it) for the permanent QR code. Keep the same Pages project across demonstrations. Do not use a deployment-specific preview URL.
 8. Optionally disable preview branch deployments; `template` must never be the production branch.
 
-No production URL or automatic deployment has been verified yet. Update this README with the actual repository and production URLs after connecting them.
+No production URL or automatic deployment has been verified yet. Update this README with the actual production URL after connecting it.
 
 References: [Pages Git integration](https://developers.cloudflare.com/pages/get-started/git-integration/), [React/Vite build settings](https://developers.cloudflare.com/pages/configuration/build-configuration/), [build runtime configuration](https://developers.cloudflare.com/pages/configuration/build-image/).
 
@@ -131,15 +129,37 @@ The `template` branch and `demo-template-v1` tag preserve the initial placeholde
 
 **This intentionally discards tracked local edits and replaces production branch history.** Save any demo you want to keep on a separate branch and commit or stash local edits first. Run from this repository and check that `origin` is the intended demo repository.
 
-After initial GitHub setup, run these commands one at a time, stopping on any error:
+First stop this project's dev/preview servers so Windows can replace dependencies. After initial GitHub setup, run these commands one at a time, stopping on any error:
 
 ```sh
 git fetch origin
+git rev-parse --verify origin/template
 git checkout main
 git reset --hard origin/template
 git commit --allow-empty -m "Reset live demo to template"
 git push --force-with-lease origin main
 npm ci
+```
+
+PowerShell does not automatically stop after a failed Git command. To paste the reset as one operation, use this guarded block:
+
+```powershell
+& {
+    git fetch origin
+    if ($LASTEXITCODE -ne 0) { throw 'Fetch failed. Reset stopped.' }
+    git rev-parse --verify origin/template
+    if ($LASTEXITCODE -ne 0) { throw 'Publish the template branch first. Reset stopped.' }
+    git checkout main
+    if ($LASTEXITCODE -ne 0) { throw 'Checkout failed. Reset stopped.' }
+    git reset --hard origin/template
+    if ($LASTEXITCODE -ne 0) { throw 'Reset failed. Nothing will be committed or pushed.' }
+    git commit --allow-empty -m "Reset live demo to template"
+    if ($LASTEXITCODE -ne 0) { throw 'Commit failed. Nothing will be pushed.' }
+    git push --force-with-lease origin main
+    if ($LASTEXITCODE -ne 0) { throw 'Push failed. Check remote changes before retrying.' }
+    npm ci
+    if ($LASTEXITCODE -ne 0) { throw 'Install failed. Stop this project’s dev/preview servers and retry npm ci.' }
+}
 ```
 
 The fresh reset commit gives Cloudflare a new commit to build even when the original baseline was already deployed. The template remains pristine. Wait for the successful deployment before presenting; the URL remains the same. If the lease is rejected, inspect the remote changes before trying again.
