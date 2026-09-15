@@ -4,6 +4,8 @@ A deliberately small React + TypeScript + Vite starter for turning an audience i
 
 **Live demo:** [live-vibe-code-demo.pages.dev](https://live-vibe-code-demo.pages.dev/). Use this permanent production URL for the audience QR code.
 
+The placeholder includes a locally stored, scannable QR code in `public/demo-qr.png`, plus a clickable URL for people already on their phones. The image encodes the permanent production URL and does not depend on an external QR service.
+
 ## Local development
 
 Use Node.js 24.14.0 (pinned in `.node-version`) and npm.
@@ -71,7 +73,7 @@ Cloudflare Pages' GitHub integration deploys pushes to `main`. The coding agent 
 | Production URL | [live-vibe-code-demo.pages.dev](https://live-vibe-code-demo.pages.dev/) |
 | Production branch | `main` |
 | Pristine baseline branch | `template` |
-| Baseline tag | `demo-template-v1` |
+| Baseline tag | `demo-template-v2` |
 | Framework preset | React (Vite) |
 | Build command | `npm run build` |
 | Build output directory | `dist` |
@@ -80,7 +82,7 @@ Cloudflare Pages' GitHub integration deploys pushes to `main`. The coding agent 
 
 ### GitHub setup
 
-The connected repository is [webrlabs/live-vibe-code-demo](https://github.com/webrlabs/live-vibe-code-demo). The production branch `main`, pristine `template` branch, and `demo-template-v1` tag have been pushed. Keep this remote for the current demo.
+The connected repository is [webrlabs/live-vibe-code-demo](https://github.com/webrlabs/live-vibe-code-demo). The production branch `main`, pristine `template` branch, and `demo-template-v2` tag have been pushed. Keep this remote for the current demo.
 
 When cloning onto a different development computer:
 
@@ -90,7 +92,7 @@ cd live-vibe-code-demo
 npm ci
 ```
 
-If `origin/template` is missing after a fetch, stop before resetting. In the original checkout, verify the local `template` branch and `demo-template-v1` tag, then publish them with `git push origin template demo-template-v1` and run `git fetch origin`. A fetch only downloads branches that exist on the remote.
+If `origin/template` is missing after a fetch, stop before resetting. In the original checkout, verify the local `template` branch and `demo-template-v2` tag, then publish them with `git push origin template demo-template-v2` and run `git fetch origin`. A fetch only downloads branches that exist on the remote.
 
 ### Connect Cloudflare Pages once
 
@@ -128,7 +130,7 @@ Keep the idea achievable and prefer local/demo data. The placeholder's waiting i
 
 ## Reset before another presentation
 
-The `template` branch and `demo-template-v1` tag preserve the initial placeholder. Leave both untouched during live challenges.
+The `template` branch and `demo-template-v2` tag preserve the placeholder with its QR code. Leave both untouched during live challenges. The original `demo-template-v1` tag remains available as the historical baseline without a QR code.
 
 **This intentionally discards tracked local edits and replaces production branch history.** Save any demo you want to keep on a separate branch and commit or stash local edits first. Run from this repository and check that `origin` is the intended demo repository.
 
@@ -172,7 +174,7 @@ Untracked files are not removed by reset. Review and remove demo-only leftovers 
 ```sh
 git checkout main
 git pull --ff-only origin main
-git restore --source=demo-template-v1 --staged --worktree -- .
+git restore --source=demo-template-v2 --staged --worktree -- .
 git commit --allow-empty -m "Restore live demo placeholder"
 git push origin main
 npm ci

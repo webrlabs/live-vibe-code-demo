@@ -23,7 +23,7 @@ Rapidly transform the existing application into the application described by the
 - Start with `src/App.tsx`, `src/main.tsx`, and `src/index.css`.
 - Do not radically alter deployment: Cloudflare Pages watches GitHub `main`, runs `npm run build`, and publishes `dist/`.
 - Do not add Cloudflare tokens or deployment workflows. The GitHub integration handles deployment.
-- Keep the `template` branch and `demo-template-v1` tag pristine. Only modify them when explicitly asked to update the reusable baseline.
+- Keep the `template` branch and `demo-template-v2` tag pristine. Only modify them when explicitly asked to update the reusable baseline.
 
 ## Completion procedure
 

@@ -11,23 +11,35 @@ function App() {
       <main>
         <p className="eyebrow"><span className="status-dot" aria-hidden="true" /> THE LIVE EXPERIMENT</p>
         <h1>This application<br />does not exist <span className="yet">yet.</span></h1>
-        <p className="intro">
-          During today's presentation, AI will build it from an idea
-          suggested by <strong>this audience.</strong>
-        </p>
-        <section className="waiting" aria-labelledby="waiting-title">
-          <div className="waiting-icon" aria-hidden="true"><span /></div>
-          <div>
-            <h2 id="waiting-title">Waiting for an idea...</h2>
-            <p>You bring the what. AI builds the how.</p>
+        <div className="challenge-body">
+          <div className="challenge-copy">
+            <p className="intro">
+              During today's presentation, AI will build it from an idea
+              suggested by <strong>this audience.</strong>
+            </p>
+            <section className="waiting" aria-labelledby="waiting-title">
+              <div className="waiting-icon" aria-hidden="true"><span /></div>
+              <div>
+                <h2 id="waiting-title">Waiting for an idea...</h2>
+                <p>You bring the what. AI builds the how.</p>
+              </div>
+              <span className="waiting-arrow" aria-hidden="true">↗</span>
+            </section>
+            <ol className="steps" aria-label="How the challenge works">
+              <li><span>01</span> Your idea</li>
+              <li><span>02</span> AI builds it</li>
+              <li><span>03</span> Try it here</li>
+            </ol>
           </div>
-          <span className="waiting-arrow" aria-hidden="true">↗</span>
-        </section>
-        <ol className="steps" aria-label="How the challenge works">
-          <li><span>01</span> Your idea</li>
-          <li><span>02</span> AI builds it</li>
-          <li><span>03</span> Try it here</li>
-        </ol>
+          <aside className="join-card" aria-labelledby="join-title">
+            <h2 id="join-title">Follow along live</h2>
+            <a className="qr-link" href="https://live-vibe-code-demo.pages.dev/" aria-label="Open the live demo on this device">
+              <img src="/demo-qr.png" width="492" height="492" alt="QR code for https://live-vibe-code-demo.pages.dev/" />
+            </a>
+            <p>Scan with your phone camera.</p>
+            <a className="join-url" href="https://live-vibe-code-demo.pages.dev/">live-vibe-code-demo.pages.dev</a>
+          </aside>
+        </div>
       </main>
       <footer>
         <span>From a blank page to a real app.</span>
