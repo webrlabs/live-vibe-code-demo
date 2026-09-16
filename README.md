@@ -185,3 +185,22 @@ Before a remote exists, `git reset --hard template` restores the local baseline 
 ## Secrets
 
 `.gitignore` excludes dependencies, build output, environment secrets, local Cloudflare state, and key files. Only intentionally empty/example environment files may be committed. Never put credentials in source code or `VITE_*` variables: browser bundles are public.
+
+## Current energy intelligence application
+
+The live app built September 16, 2026 includes:
+
+- Six curated technology pathways with practical application ideas and original DOE sources.
+- Crossref journal-article search (2020 through today) and OSTI energy research search, up to 40 records per query.
+- Keyword connections, publication-year distributions, and optional annual Crossref counts over the last three complete years.
+- A keyword lab for pasted abstracts and local `.txt`/`.md` files (200 KB maximum, first 50,000 characters).
+- Local browser watchlist, accessible technology details, and Markdown exports with evidence links.
+
+No accounts, database, API keys, or generative model are used. Keyword matching is deterministic and intentionally limited to the curated vocabulary. Applications are editorial suggestions requiring technical validation. Search counts reflect the source's metadata and query matching, not market adoption. Sources may omit abstracts or include future publication dates. External pages cannot be arbitrarily scraped; import text or search the supported public APIs instead.
+
+### Development and tests
+
+Run `npm run dev`, `npm run test`, `npm run lint`, and `npm run build`.
+Vite proxies `/api/osti` locally. On Cloudflare, `functions/api/osti.js` uses the existing Pages Git integration and a fixed OSTI upstream with a timeout and bounded result count. No credentials or deployment changes are required. `npm run preview` serves static assets only; use the dev server or deployed Pages app for OSTI search. Crossref works directly in browsers.
+
+Tests cover word boundaries and plural/hyphen handling, source-text cleanup, request validation, upstream constraints, and API failure handling. The optional annual-count control queries Crossref regardless of the source used for the displayed sample.
