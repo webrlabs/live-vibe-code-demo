@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Research from "./Research";
-import { keywordHits, downloadText } from "./analysis";
+import { keywordHits, downloadText, readTextFile } from "./analysis";
 import { technologies, sectors } from "./data";
 import type { Technology } from "./data";
 
@@ -59,21 +59,21 @@ function App() {
   }, [selected]);
   async function importText(file?: File) {
     if (!file) return;
-    if (!/\.(txt|md)$/i.test(file.name) || file.size > 200000) {
-      setNotice("Choose a .txt or .md file smaller than 200 KB.");
-      return;
-    }
     try {
-      const text = await file.text();
-      setInput(text.slice(0, 50000));
+      const result = await readTextFile(file);
+      setInput(result.text);
       setAnalyzed("");
       setNotice(
-        text.length > 50000
+        result.truncated
           ? "Imported the first 50,000 characters."
           : `Imported ${file.name}. Ready to analyze.`,
       );
-    } catch {
-      setNotice("This file could not be read. Try pasting its text instead.");
+    } catch (error) {
+      setNotice(
+        error instanceof Error
+          ? error.message
+          : "This file could not be read. Try pasting its text instead.",
+      );
     }
   }
   function save(id: string) {

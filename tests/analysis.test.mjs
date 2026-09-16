@@ -1,7 +1,25 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { keywordHits, plainText } from "../src/analysis.ts";
+import { keywordHits, plainText, readTextFile } from "../src/analysis.ts";
 import { onRequestGet } from "../functions/api/osti.js";
+
+test("local text imports preserve content, cap length, and reject unsupported files", async () => {
+  assert.deepEqual(await readTextFile(new File(["solar & grid"], "notes.md")), {
+    text: "solar & grid",
+    truncated: false,
+  });
+  const result = await readTextFile(new File(["x".repeat(60000)], "notes.txt"));
+  assert.equal(result.text.length, 50000);
+  assert.equal(result.truncated, true);
+  await assert.rejects(
+    readTextFile(new File(["solar"], "notes.pdf")),
+    /txt or .md/,
+  );
+  await assert.rejects(
+    readTextFile(new File(["x".repeat(200001)], "notes.txt")),
+    /200 KB/,
+  );
+});
 
 test("keywords match boundaries, plurals, and hyphenated phrases", () => {
   assert.deepEqual(

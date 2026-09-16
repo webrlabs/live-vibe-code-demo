@@ -45,3 +45,11 @@ export function downloadText(filename: string, text: string) {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+export async function readTextFile(file: Pick<File, "name" | "size" | "text">) {
+  if (!/\.(txt|md)$/i.test(file.name) || file.size > 200000) {
+    throw new Error("Choose a .txt or .md file smaller than 200 KB.");
+  }
+  const content = await file.text();
+  return { text: content.slice(0, 50000), truncated: content.length > 50000 };
+}
